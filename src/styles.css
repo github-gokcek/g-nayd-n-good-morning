@@ -19,6 +19,8 @@
  */
 
 @theme inline {
+  --font-sans: "DM Sans", sans-serif;
+  --font-display: "Lora", serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -62,26 +64,26 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 0.5rem;
+  --background: oklch(0.98 0.013 15);
+  --foreground: oklch(0.33 0.055 8);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
+  --primary: oklch(0.53 0.15 8);
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
+  --muted-foreground: oklch(0.48 0.04 12);
+  --accent: oklch(0.94 0.035 12);
   --accent-foreground: oklch(0.208 0.042 265.755);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.85 0.05 12);
+  --input: oklch(0.85 0.05 12);
+  --ring: oklch(0.65 0.12 10);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -142,3 +144,68 @@
     color: var(--color-foreground);
   }
 }
+
+:root {
+  --love-wash: oklch(0.985 0.015 15 / 63%);
+  --portrait: oklch(0.93 0.043 10);
+  --heart-soft: oklch(0.7 0.1 10);
+  --love-shadow: 0 10px 30px oklch(0.53 0.15 8 / 16%);
+  --paper-glass: oklch(1 0 0 / 45%);
+}
+body { margin: 0; font-family: var(--font-sans); letter-spacing: 0; }
+.love-page { min-height: 100svh; position: relative; isolation: isolate; display: flex; flex-direction: column; overflow: hidden; }
+.evening-background { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -3; }
+.scene-wash { position: absolute; inset: 0; background: var(--love-wash); z-index: -2; }
+.love-header { display: flex; align-items: center; justify-content: space-between; padding: 30px 44px; color: var(--muted-foreground); font-size: 12px; }
+.little-wordmark { display: flex; gap: 9px; align-items: center; color: var(--primary); font-weight: 500; }
+.header-note { font-size: 11px; }
+.invitation { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 42px 24px 60px; text-align: center; }
+.portrait-placeholder { position: relative; width: 112px; height: 112px; display: grid; place-items: center; background: var(--portrait); border: 6px solid var(--paper-glass); border-radius: 50%; outline: 1px solid var(--border); outline-offset: 7px; margin-bottom: 36px; box-shadow: var(--love-shadow); }
+.portrait-heart { width: 45px; height: 45px; color: var(--primary); }
+.portrait-sparkle { position: absolute; right: -9px; bottom: 7px; background: var(--background); color: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; }
+.scene-content { width: 100%; max-width: 640px; animation: arrive .6s ease both; }
+.eyebrow { color: var(--primary); font-size: 10px; font-weight: 600; margin: 0 0 18px; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: 56px; line-height: 1.2; margin: 0; }
+h1 em { font-weight: 400; color: var(--primary); }
+.intro-copy { color: var(--muted-foreground); font-size: 18px; line-height: 1.8; margin: 23px 0 0; }
+.intro-copy span { color: var(--primary); font-family: var(--font-display); font-style: italic; }
+.small-divider { display: flex; align-items: center; justify-content: center; gap: 13px; margin: 26px 0; color: var(--heart-soft); }
+.small-divider span { width: 35px; height: 1px; background: var(--border); }
+.personal-note { color: var(--muted-foreground); font-size: 13px; margin: 0 0 25px; line-height: 1.7; }
+.romantic-button { min-height: 48px; height: auto; padding: 13px 25px; font-size: 13px; border-radius: 6px; box-shadow: var(--love-shadow); gap: 17px; }
+.under-button { color: var(--muted-foreground); font-family: var(--font-display); font-style: italic; font-size: 12px; margin-top: 19px; }
+.love-footer { padding: 0 20px 29px; text-align: center; color: var(--muted-foreground); }
+.shared-things { display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 11px; }
+.shared-things span { display: flex; align-items: center; gap: 7px; }
+.footer-dot { opacity: .45; }
+.love-footer p { font-size: 11px; font-family: var(--font-display); font-style: italic; margin: 15px 0 0; }
+.question-title { font-size: 36px; max-width: 600px; margin: auto; line-height: 1.4; text-wrap: balance; }
+.question-note { color: var(--muted-foreground); font-size: 13px; margin: 24px 0; line-height: 1.7; }
+.answer-area { min-height: 125px; display: flex; align-items: flex-start; justify-content: center; flex-wrap: wrap; gap: 16px; padding-top: 8px; }
+.soft-button { min-width: 100px; min-height: 48px; height: auto; padding: 12px 20px; background: var(--paper-glass); color: var(--muted-foreground); box-shadow: none; font-size: 13px; }
+.playful-no { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 24 24'%3E%3Ctext y='20' font-size='22'%3E💗%3C/text%3E%3C/svg%3E") 12 12, pointer; transition: transform .2s ease, background .2s; }
+.hop-1 { transform: translate(20px, 58px) rotate(5deg); }
+.hop-2 { transform: translate(-20px, 58px) rotate(-5deg); }
+.heart-progress { display: flex; justify-content: center; gap: 9px; color: var(--border); margin-top: 10px; }
+.heart-active { color: var(--primary); }
+.replay-button { color: var(--primary); font-size: 12px; margin-top: 3px; }
+.floating-hearts { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+.float-heart { position: absolute; width: 17px; height: 17px; color: var(--heart-soft); opacity: .3; animation: drift 7s ease-in-out infinite; }
+.heart-0 { left: 16%; top: 22%; }.heart-1 { left: 80%; top: 18%; animation-delay: -2s; }.heart-2 { left: 8%; top: 57%; animation-delay: -4s; }.heart-3 { left: 88%; top: 64%; animation-delay: -1s; }.heart-4 { left: 27%; top: 76%; animation-delay: -5s; }.heart-5 { left: 72%; top: 80%; animation-delay: -3s; }.heart-6 { left: 36%; top: 14%; animation-delay: -6s; width: 10px; }.heart-7 { left: 61%; top: 87%; animation-delay: -2s; width: 10px; }.heart-8 { left: 5%; top: 33%; width: 11px; }.heart-9 { left: 95%; top: 39%; animation-delay: -5s; }.heart-10 { left: 19%; top: 88%; width: 10px; }.heart-11 { left: 77%; top: 43%; animation-delay: -4s; width: 10px; }
+.heart-burst { position: absolute; left: 50%; top: 50%; pointer-events: none; color: var(--primary); }
+.heart-burst svg { position: absolute; width: 18px; animation: burst 1.3s ease-out both; }
+.burst-0 { --x: -140px; --y: -170px; }.burst-1 { --x: 140px; --y: -150px; }.burst-2 { --x: -180px; --y: -30px; }.burst-3 { --x: 180px; --y: -20px; }.burst-4 { --x: -90px; --y: 120px; }.burst-5 { --x: 110px; --y: 100px; }.burst-6 { --x: -20px; --y: -210px; }.burst-7 { --x: 20px; --y: 140px; }
+@keyframes arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes drift { 0%,100% { opacity: .15; transform: translateY(0) rotate(-10deg); } 50% { opacity: .45; transform: translateY(-17px) rotate(10deg); } }
+@keyframes burst { from { opacity: .8; transform: translate(0,0) scale(.5); } to { opacity: 0; transform: translate(var(--x),var(--y)) scale(1.2); } }
+@media (min-height: 1100px) { .invitation { flex: none; min-height: 760px; } .love-footer { margin-top: auto; } }
+@media (max-width: 600px) {
+  .love-header { padding: 23px 24px; }.header-note { display: none; }
+  .invitation { padding: 35px 24px 46px; }
+  h1 { font-size: 42px; }.question-title { font-size: 30px; }
+  .portrait-placeholder { width: 100px; height: 100px; margin-bottom: 32px; }
+  .intro-copy { font-size: 16px; }.personal-note { max-width: 280px; margin-left: auto; margin-right: auto; }
+  .shared-things { gap: 9px; font-size: 10px; }.shared-things span { gap: 5px; }
+  .love-footer { padding-bottom: 24px; }.answer-area { gap: 10px; }.romantic-button { padding: 13px 19px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
