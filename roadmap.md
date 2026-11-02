@@ -2,4 +2,6 @@
 - [x] Soru havuzunu ve şakaları birlikte kararlaştır.
 - [x] Tek sayfalık karşılama, sıralı sorular ve finali hazırla.
 - [x] Soru kurallarını ve gerçek sayfa akışını doğrula.
-- [ ] Göksu'nun profil resmini ekle — kullanıcının resmi yüklemesi bekleniyor.
+- [x] Davet etkileşimiyle birlikte arka plan videosunun sesini başlat ve ses kontrolü ekle.
+- [x] Göksu avatarını dairesel çerçeveye sığdır.
+- [x] Göksu'nun profil resmini ekle ve yerel medya dosyalarını kullan.

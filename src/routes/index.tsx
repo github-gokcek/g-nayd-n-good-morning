@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
-import { ArrowRight, Heart, Gamepad2, Tv, Sparkles, RotateCcw } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ArrowRight, Heart, Gamepad2, Tv, Sparkles, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { chooseSequence, jokeForStep } from '@/lib/questions';
 import evening from '@/assets/sakura-evening.jpg';
-import backgroundLoop from '@/assets/background-loop.mp4.asset.json';
-import goksuAvatar from '@/assets/goksu-avatar.png.asset.json';
+import backgroundLoop from '@/assets/background-loop.mp4';
+import goksuAvatar from '@/assets/goksu-avatar.png';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
@@ -20,7 +20,10 @@ export const Route = createFileRoute('/')({
 });
 
 function Index() {
+  const backgroundVideo = useRef<HTMLVideoElement>(null);
   const [stage, setStage] = useState<'welcome' | 'questions' | 'done'>('welcome');
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [audioError, setAudioError] = useState('');
   const [sequence, setSequence] = useState<ReturnType<typeof chooseSequence>>([]);
   const [step, setStep] = useState(0);
   const [confirm, setConfirm] = useState(false);
@@ -30,7 +33,30 @@ function Index() {
   const current = sequence[step];
   const joke = jokeForStep(step);
 
+  function setBackgroundAudio(enabled: boolean) {
+    const video = backgroundVideo.current;
+    if (!video) {
+      setAudioError('Arka plan videosuna erişilemedi. Sayfayı yenileyip tekrar deneyebilirsin.');
+      return;
+    }
+
+    video.muted = !enabled;
+    setAudioEnabled(enabled);
+    setAudioError('');
+
+    if (enabled) {
+      void video.play().catch(() => {
+        if (!video.muted) {
+          video.muted = true;
+          setAudioEnabled(false);
+          setAudioError('Arka plan sesi başlatılamadı. Tarayıcı ayarlarını kontrol edip tekrar deneyebilirsin.');
+        }
+      });
+    }
+  }
+
   function start() {
+    setBackgroundAudio(true);
     setSequence(chooseSequence());
     setStep(0); setConfirm(false); setChanged(false); setHops(0);
     setStage('questions');
@@ -50,19 +76,32 @@ function Index() {
 
   return (
     <main className="love-page">
-      <video className="evening-background" src={backgroundLoop.url} poster={evening} autoPlay muted loop playsInline aria-hidden="true" />
+      <video ref={backgroundVideo} className="evening-background" src={backgroundLoop} poster={evening} autoPlay muted={!audioEnabled} loop playsInline aria-hidden="true" />
       <div className="scene-wash" />
       <div className="floating-hearts" aria-hidden="true">
         {Array.from({ length: 12 }, (_, index) => <Heart key={index} className={`float-heart heart-${index}`} />)}
       </div>
       <header className="love-header">
         <span className="little-wordmark"><Heart size={16} fill="currentColor" /> sadece senin için</span>
-        <span className="header-note">küçük bir sürpriz, kocaman bir kalp</span>
+        <div className="header-actions">
+          <span className="header-note">küçük bir sürpriz, kocaman bir kalp</span>
+          <button
+            type="button"
+            className="sound-toggle"
+            onClick={() => setBackgroundAudio(!audioEnabled)}
+            aria-label={audioEnabled ? 'Arka plan sesini kapat' : 'Arka plan sesini aç'}
+            aria-pressed={audioEnabled}
+          >
+            {audioEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
+            {audioEnabled ? 'Sesi kapat' : 'Sesi aç'}
+          </button>
+          {audioError && <span className="audio-error" role="status">{audioError}</span>}
+        </div>
       </header>
 
       <section className="invitation" aria-live="polite">
         <div className="portrait-placeholder" aria-label="Göksu'nun profil resmi">
-          <img className="portrait-image" src={goksuAvatar.url} alt="Göksu'yu temsil eden kurbağa kapüşonlu anime karakteri" width={112} height={112} />
+          <img className="portrait-image" src={goksuAvatar} alt="Göksu'nun kurbağa kapüşonlu anime karakteri" width={112} height={112} />
           <span className="portrait-sparkle"><Sparkles size={18} /></span>
         </div>
 
