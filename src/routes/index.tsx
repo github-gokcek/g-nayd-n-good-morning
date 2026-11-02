@@ -4,6 +4,8 @@ import { ArrowRight, Heart, Gamepad2, Tv, Sparkles, RotateCcw } from 'lucide-rea
 import { Button } from '@/components/ui/button';
 import { chooseSequence, jokeForStep } from '@/lib/questions';
 import evening from '@/assets/sakura-evening.jpg';
+import backgroundLoop from '@/assets/background-loop.mp4.asset.json';
+import goksuAvatar from '@/assets/goksu-avatar.png.asset.json';
 
 export const Route = createFileRoute('/')({
   head: () => ({ meta: [
@@ -48,7 +50,7 @@ function Index() {
 
   return (
     <main className="love-page">
-      <img className="evening-background" src={evening} alt="" width={1536} height={1024} />
+      <video className="evening-background" src={backgroundLoop.url} poster={evening} autoPlay muted loop playsInline aria-hidden="true" />
       <div className="scene-wash" />
       <div className="floating-hearts" aria-hidden="true">
         {Array.from({ length: 12 }, (_, index) => <Heart key={index} className={`float-heart heart-${index}`} />)}
@@ -59,8 +61,8 @@ function Index() {
       </header>
 
       <section className="invitation" aria-live="polite">
-        <div className="portrait-placeholder" aria-label="Göksu'nun profil resmi için geçici kalp">
-          <Heart className="portrait-heart" strokeWidth={1.3} fill="currentColor" />
+        <div className="portrait-placeholder" aria-label="Göksu'nun profil resmi">
+          <img className="portrait-image" src={goksuAvatar.url} alt="Göksu'yu temsil eden kurbağa kapüşonlu anime karakteri" width={112} height={112} />
           <span className="portrait-sparkle"><Sparkles size={18} /></span>
         </div>
 
