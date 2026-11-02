@@ -1,24 +1,110 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
+import { ArrowRight, Heart, Gamepad2, Tv, Sparkles, RotateCcw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { chooseSequence, jokeForStep } from '@/lib/questions';
+import evening from '@/assets/sakura-evening.jpg';
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
+  head: () => ({ meta: [
+    { title: "Merhaba Göksu · Sana küçük bir sürpriz" },
+    { name: 'description', content: 'Biraz TFT, biraz anime, en çok da sen. Göksu için hazırlanmış küçük bir davet.' },
+    { property: 'og:title', content: 'Merhaba Göksu · Sana küçük bir sürpriz' },
+    { property: 'og:description', content: 'Biraz TFT, biraz anime, en çok da sen.' },
+    { property: 'og:type', content: 'website' },
+    { name: 'twitter:card', content: 'summary_large_image' },
+  ] }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const [stage, setStage] = useState<'welcome' | 'questions' | 'done'>('welcome');
+  const [sequence, setSequence] = useState<ReturnType<typeof chooseSequence>>([]);
+  const [step, setStep] = useState(0);
+  const [confirm, setConfirm] = useState(false);
+  const [changed, setChanged] = useState(false);
+  const [hops, setHops] = useState(0);
+  const [celebration, setCelebration] = useState(0);
+  const current = sequence[step];
+  const joke = jokeForStep(step);
+
+  function start() {
+    setSequence(chooseSequence());
+    setStep(0); setConfirm(false); setChanged(false); setHops(0);
+    setStage('questions');
+  }
+  function accept() {
+    setConfirm(false); setChanged(false); setHops(0);
+    setCelebration(value => value + 1);
+    if (step + 1 >= sequence.length) setStage('done');
+    else setStep(value => value + 1);
+  }
+  function negative() {
+    if (joke === 'runaway' && hops < 2) setHops(value => value + 1);
+    else if (joke === 'change' && !changed) setChanged(true);
+    else if (changed) accept();
+    else setConfirm(true);
+  }
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="love-page">
+      <img className="evening-background" src={evening} alt="" width={1536} height={1024} />
+      <div className="scene-wash" />
+      <div className="floating-hearts" aria-hidden="true">
+        {Array.from({ length: 12 }, (_, index) => <Heart key={index} className={`float-heart heart-${index}`} />)}
+      </div>
+      <header className="love-header">
+        <span className="little-wordmark"><Heart size={16} fill="currentColor" /> sadece senin için</span>
+        <span className="header-note">küçük bir sürpriz, kocaman bir kalp</span>
+      </header>
+
+      <section className="invitation" aria-live="polite">
+        <div className="portrait-placeholder" aria-label="Göksu'nun profil resmi için geçici kalp">
+          <Heart className="portrait-heart" strokeWidth={1.3} fill="currentColor" />
+          <span className="portrait-sparkle"><Sparkles size={18} /></span>
+        </div>
+
+        {stage === 'welcome' && <div className="scene-content" key="welcome">
+          <p className="eyebrow">EN SEVDİĞİM KİŞİYE</p>
+          <h1>Merhaba <em>Göksu.</em></h1>
+          <p className="intro-copy">Biraz TFT, biraz anime,<br />en çok da <span>sen.</span></p>
+          <div className="small-divider"><span /><Heart size={13} /><span /></div>
+          <p className="personal-note">Aklımda sen, sana soracak birkaç tatlı sorum var.</p>
+          <Button className="romantic-button" onClick={start}>Hadi başlayalım <ArrowRight size={18} /></Button>
+          <p className="under-button">İyi ki benim duo'msun.</p>
+        </div>}
+
+        {stage === 'questions' && current && <div className="scene-content" key={`${step}-${confirm}`}>
+          <p className="eyebrow">{confirm ? 'KALBİM BİR DAHA SORUYOR' : current.kind === 'final' ? 'SON BİR KÜÇÜK DİLEK' : 'AKLIMDA BİR ŞEY VAR…'}</p>
+          <h1 className="question-title">{confirm ? 'Bir minik şans daha?' : current.text}</h1>
+          <p className="question-note">{confirm ? 'Seninle olunca her şey biraz daha güzel.' : changed ? 'Bak, kalbin de fikrini değiştirdi.' : hops > 0 ? 'Sanırım bu cevap biraz utangaç.' : current.kind === 'final' ? 'Çünkü en güzel planım, seninle olanı.' : 'Sen olunca sıradan bir akşam bile özel.'}</p>
+          <div className="answer-area">
+            {confirm ? <>
+              <Button className="romantic-button" onClick={accept}>Peki, olur <Heart size={17} /></Button>
+              <Button variant="outline" className="soft-button" onClick={accept}>Tamam, sen kazandın</Button>
+            </> : <>
+              <Button className="romantic-button" onClick={accept}>Evet, seve seve <Heart size={17} /></Button>
+              <Button variant="outline" className={`soft-button playful-no hop-${hops}`} onPointerEnter={event => { if (event.pointerType === 'mouse' && joke === 'runaway' && hops < 2) setHops(value => value + 1); }} onClick={negative}>{changed ? 'Peki, olur ♡' : 'Hayır'}</Button>
+            </>}
+          </div>
+          <div className="heart-progress" aria-label="Davet ilerlemesi">{sequence.map((question, index) => <Heart key={question.id} size={12} className={index <= step ? 'heart-active' : ''} fill={index <= step ? 'currentColor' : 'none'} />)}</div>
+        </div>}
+
+        {stage === 'done' && <div className="scene-content" key="done">
+          <p className="eyebrow">EN GÜZEL CEVAP SENDİN</p>
+          <h1>O zaman, <em>bu gece bizim.</em></h1>
+          <p className="intro-copy">Lobi de hazır, bir bölüm de.<br />Eksik olan tek şey <span>sendin.</span></p>
+          <div className="small-divider"><span /><Heart size={13} fill="currentColor" /><span /></div>
+          <p className="personal-note">İyi ki varsın, Göksu. İyi ki biz.</p>
+          <Button variant="ghost" className="replay-button" onClick={start}><RotateCcw size={15} /> Bir kez daha?</Button>
+        </div>}
+      </section>
+
+      {celebration > 0 && <div key={celebration} className="heart-burst" aria-hidden="true">{Array.from({ length: 8 }, (_, index) => <Heart key={index} className={`burst-${index}`} fill="currentColor" />)}</div>}
+      <footer className="love-footer">
+        <div className="shared-things"><span><Gamepad2 size={16} /> aynı lobi</span><span className="footer-dot">·</span><span><Tv size={16} /> aynı anime</span><span className="footer-dot">·</span><span><Heart size={15} /> aynı heyecan</span></div>
+        <p>Seninle, her evrende.</p>
+      </footer>
+    </main>
   );
 }

@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep invitation questions, curated sequences, and joke selection in a browser-safe data module so content can be revised without changing the presentation.
+- Keep the single-page invitation ephemeral in React state; it does not collect or persist personal answers.
