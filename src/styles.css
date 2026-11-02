@@ -198,7 +198,7 @@ h1 em { font-weight: 400; color: var(--primary); }
 @keyframes arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes drift { 0%,100% { opacity: .15; transform: translateY(0) rotate(-10deg); } 50% { opacity: .45; transform: translateY(-17px) rotate(10deg); } }
 @keyframes burst { from { opacity: .8; transform: translate(0,0) scale(.5); } to { opacity: 0; transform: translate(var(--x),var(--y)) scale(1.2); } }
-@media (min-height: 1100px) { .invitation { flex: none; min-height: 760px; } .love-footer { margin-top: auto; } }
+
 @media (max-width: 600px) {
   .love-header { padding: 23px 24px; }.header-note { display: none; }
   .invitation { padding: 35px 24px 46px; }
