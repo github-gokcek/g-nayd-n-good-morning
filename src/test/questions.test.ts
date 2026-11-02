@@ -19,7 +19,7 @@ describe('Göksu invitation rules', () => {
     }
   });
   it('starts regular sequences with an opening question', () => {
-    for (let index = 0; index < 5; index++) expect(chooseSequence(index / 6 + 0.001)[0].kind).toBe('opening');
+    for (let index = 0; index < 5; index++) expect(chooseSequence(index / 6 + 0.001)[0]?.kind).toBe('opening');
   });
   it('uses all three negative-option jokes', () => {
     expect([0, 1, 2].map(jokeForStep)).toEqual(['runaway', 'change', 'confirm']);

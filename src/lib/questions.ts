@@ -24,7 +24,9 @@ export const sequences = [
 
 export function chooseSequence(random = Math.random()) {
   const index = Math.min(sequences.length - 1, Math.max(0, Math.floor(random * sequences.length)));
-  return sequences[index].map(id => {
+  const selected = sequences[index];
+  if (!selected) throw new Error('Unknown sequence');
+  return selected.map(id => {
     const question = questions.find(item => item.id === id);
     if (!question) throw new Error('Unknown question');
     return question;
